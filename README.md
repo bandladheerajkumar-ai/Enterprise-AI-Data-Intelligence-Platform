@@ -50,7 +50,7 @@ The platform converts user questions into optimized SQL queries using Large Lang
 
 # Architecture
 
-![Architecture](screenshots/architecture.png)
+![Architecture](Employee_rag.jpg)
 
 ---
 
