@@ -54,40 +54,6 @@ The platform converts user questions into optimized SQL queries using Large Lang
 
 ---
 
-# End-to-End Workflow
+# Employee Graph Design
+![Architecture](Employee_rag.jpg)
 
-```text
-User Question
-      │
-      ▼
-Schema Retrieval (Qdrant)
-      │
-      ▼
-Graph Traversal (NetworkX)
-      │
-      ▼
-Relationship Discovery
-      │
-      ▼
-Prompt Construction
-      │
-      ▼
-LLM (Text-to-SQL)
-      │
-      ▼
-Generated SQL
-      │
-      ▼
-SQL Execution
-      │
-      ▼
-Self-Healing (if error)
-      │
-      ▼
-Final Result
-      │
-      ▼
-Natural Language Response
-      │
-      ▼
-Observability + Explainability
