@@ -58,6 +58,6 @@ The platform converts user questions into optimized SQL queries using Large Lang
 ![Employee Graph](Enterprise_GraphRAG_Text-to-SQL_Platform/relational_network_graph.pdf)
 
 ## Demo Video
-Click and download to watch the video.
+Click the below image and download the raw file to watch the video.
 [![Watch Demo](Employee_chatbot.png)](./Employee_rag_video.mp4)
 
