@@ -55,5 +55,5 @@ The platform converts user questions into optimized SQL queries using Large Lang
 ---
 
 # Employee Graph Design
-![Architecture](Employee_rag.jpg)
+![Employee Graph](Enterprise_GraphRAG_Text-to-SQL_Platform/relational_network_graph.pdf)
 
