@@ -1,0 +1,1 @@
+Download BAAI/bge-large-en embedding from hugging face and place the files here.

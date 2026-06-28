@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Observability Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    font-family:Arial, sans-serif;
+    padding:20px;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0px 4px 8px rgba(0,0,0,0.3);
+}
+
+.card h3{
+    color:#94a3b8;
+    margin-bottom:10px;
+}
+
+.card h2{
+    font-size:28px;
+}
+
+.chart-box{
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:30px;
+}
+
+.table-box{
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#334155;
+}
+
+th, td{
+    padding:12px;
+    border-bottom:1px solid #475569;
+    text-align:left;
+}
+
+tr:hover{
+    background:#273449;
+}
+
+.success{
+    color:#22c55e;
+    font-weight:bold;
+}
+
+.failed{
+    color:#ef4444;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>AI Observability Dashboard</h1>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>Total Requests</h3>
+        <h2 id="totalRequests">0</h2>
+    </div>
+
+    <div class="card">
+        <h3>Success Rate</h3>
+        <h2 id="successRate">0%</h2>
+    </div>
+
+    <div class="card">
+        <h3>Avg Latency</h3>
+        <h2 id="avgLatency">0 sec</h2>
+    </div>
+
+    <div class="card">
+        <h3>Avg SQL Time</h3>
+        <h2 id="avgSqlTime">0 ms</h2>
+    </div>
+
+</div>
+
+<div class="chart-box">
+    <canvas id="latencyChart"></canvas>
+</div>
+
+<div class="table-box">
+
+    <h2 style="margin-bottom:15px;">
+        Recent Requests
+    </h2>
+
+    <table id="requestTable">
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Question</th>
+            <th>Latency</th>
+            <th>Schema</th>
+            <th>SQL Gen</th>
+            <th>SQL Exec</th>
+            <th>Repair</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+
+        <tbody></tbody>
+
+    </table>
+
+</div>
+
+<script>
+
+let latencyChart;
+
+async function loadTelemetry(){
+
+    try{
+
+        const response =
+            await fetch("/telemetry");
+
+        const data =
+            await response.json();
+
+        updateCards(data);
+
+        updateTable(data);
+
+        updateChart(data);
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+function updateCards(data){
+
+    document.getElementById("totalRequests")
+        .innerText = data.length;
+
+    const successCount =
+        data.filter(
+            x => x.success === 1
+        ).length;
+
+    const successRate =
+        data.length > 0
+        ? (successCount/data.length)*100
+        : 0;
+
+    document.getElementById("successRate")
+        .innerText =
+        successRate.toFixed(1) + "%";
+
+    const avgLatency =
+        data.length > 0
+        ? data.reduce(
+            (a,b)=>
+            a+b.total_latency_in_sec,
+            0
+          ) / data.length
+        : 0;
+
+    document.getElementById("avgLatency")
+        .innerText =
+        avgLatency.toFixed(2) + " sec";
+
+    const avgSql =
+        data.length > 0
+        ? data.reduce(
+            (a,b)=>
+            a+b.sql_generation_total_time_ms,
+            0
+          ) / data.length
+        : 0;
+
+    document.getElementById("avgSqlTime")
+        .innerText =
+        avgSql.toFixed(0) + " ms";
+}
+
+function updateTable(data) {
+
+    const tbody =
+        document.querySelector("#requestTable tbody");
+
+    tbody.innerHTML = "";
+
+    data.forEach(row => {
+
+        console.log("ROW DATA:", row);
+
+        tbody.innerHTML += `
+        <tr>
+            <td>${row.id}</td>
+            <td>${row.question}</td>
+
+            <td>${Number(row.total_latency_in_sec ?? 0).toFixed(2)}</td>
+
+            <td>${Number(row.schema_retrieval_total_time_ms ?? 0).toFixed(0)}</td>
+
+            <td>${Number(row.sql_generation_total_time_ms ?? 0).toFixed(0)}</td>
+
+            <td>${Number(row.performing_sql_query_total_time_ms ?? 0).toFixed(0)}</td>
+
+            <td>${row.repair_attempts ?? 0}</td>
+
+            <td>${row.success == 1 ? "Success" : "Failed"}</td>
+
+        </tr>
+        `;
+    });
+}
+
+function updateChart(data){
+
+    const labels =
+        data.map(x=>x.id);
+
+    const latencies =
+        data.map(
+            x=>x.total_latency_in_sec
+        );
+
+    if(latencyChart){
+        latencyChart.destroy();
+    }
+
+    const ctx =
+        document
+        .getElementById("latencyChart")
+        .getContext("2d");
+
+    latencyChart =
+        new Chart(ctx,{
+
+            type:"line",
+
+            data:{
+                labels:labels,
+
+                datasets:[{
+                    label:"Latency (sec)",
+                    data:latencies,
+                    borderWidth:2,
+                    tension:0.3
+                }]
+            },
+
+            options:{
+                responsive:true
+            }
+
+        });
+}
+
+loadTelemetry();
+
+setInterval(
+    loadTelemetry,
+    100000
+);
+
+</script>
+
+</body>
+</html>

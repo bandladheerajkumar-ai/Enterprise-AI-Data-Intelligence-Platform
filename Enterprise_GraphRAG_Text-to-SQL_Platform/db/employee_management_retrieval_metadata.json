@@ -1,0 +1,4324 @@
+{
+  "metadata_version": "1.0",
+  "database": {
+    "name": "employee_management.db",
+    "engine": "SQLite",
+    "purpose": "Employee Management System sample database for HR, project, payroll, attendance, training, asset, and performance analytics.",
+    "source_database_path": "C:\\Users\\DBandla\\Documents\\Codex\\2026-06-14\\you-are-an-expert-postgresql-database\\outputs\\employee_management.db",
+    "recommended_retrieval_strategy": [
+      "Match the user query against table name, aliases, table description, business purpose, example queries, column names, and column descriptions.",
+      "Select tables whose columns answer the requested entity or metric.",
+      "Use foreign_key_relationships to add join tables and parent lookup tables.",
+      "For graph retrieval, treat tables as nodes and foreign keys as directed edges from child table to parent table."
+    ]
+  },
+  "tables": [
+    {
+      "table_name": "assets",
+      "description": "Company assets such as laptops, monitors, phones, and accessories with tag, type, brand, model, serial number, purchase date, office, and status.",
+      "business_purpose": "Use when users ask about inventory, available assets, assigned assets, asset tags, serial numbers, asset type, or office assets.",
+      "aliases": [
+        "asset",
+        "inventory",
+        "laptop",
+        "monitor",
+        "equipment",
+        "device",
+        "asset tag"
+      ],
+      "keywords": [
+        "asset",
+        "asset tag",
+        "assets",
+        "device",
+        "equipment",
+        "inventory",
+        "laptop",
+        "monitor"
+      ],
+      "sample_row_count": 250,
+      "primary_key": [
+        "asset_id"
+      ],
+      "columns": [
+        {
+          "column_name": "asset_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying an asset.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "foreign",
+            "id",
+            "identifying"
+          ]
+        },
+        {
+          "column_name": "office_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a company office.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "offices",
+            "column": "office_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "assets",
+            "company",
+            "foreign",
+            "id",
+            "identifying",
+            "office"
+          ]
+        },
+        {
+          "column_name": "asset_tag",
+          "data_type": "TEXT",
+          "description": "Unique physical asset tag.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "physical",
+            "tag",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "asset_type",
+          "data_type": "TEXT",
+          "description": "Type of asset such as Laptop, Monitor, Phone, or Headset.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "headset",
+            "laptop",
+            "monitor",
+            "phone",
+            "such",
+            "type"
+          ]
+        },
+        {
+          "column_name": "brand",
+          "data_type": "TEXT",
+          "description": "Asset brand.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "brand"
+          ]
+        },
+        {
+          "column_name": "model",
+          "data_type": "TEXT",
+          "description": "Asset model.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "model"
+          ]
+        },
+        {
+          "column_name": "serial_number",
+          "data_type": "TEXT",
+          "description": "Unique manufacturer serial number.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "assets",
+            "manufacturer",
+            "number",
+            "serial",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "purchase_date",
+          "data_type": "TEXT",
+          "description": "Asset purchase date.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "date",
+            "purchase"
+          ]
+        },
+        {
+          "column_name": "status",
+          "data_type": "TEXT",
+          "description": "Asset inventory status.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "'Available'",
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "inventory",
+            "status"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_assets_office_status",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_assets_2",
+          "is_unique": true
+        },
+        {
+          "index_name": "sqlite_autoindex_assets_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "List available laptops",
+        "Show assigned assets",
+        "Find assets by office"
+      ],
+      "join_hints": [
+        "assets.office_id joins to offices.office_id"
+      ]
+    },
+    {
+      "table_name": "attendance",
+      "description": "Daily employee attendance records with attendance date, check-in, check-out, status, and total hours.",
+      "business_purpose": "Use when users ask about attendance, absences, working hours, work from home, holidays, half days, or daily presence.",
+      "aliases": [
+        "attendance",
+        "present",
+        "absent",
+        "check in",
+        "check out",
+        "working hours",
+        "timesheet",
+        "wfh"
+      ],
+      "keywords": [
+        "absent",
+        "attendance",
+        "check in",
+        "check out",
+        "present",
+        "timesheet",
+        "wfh",
+        "working hours"
+      ],
+      "sample_row_count": 5000,
+      "primary_key": [
+        "attendance_id"
+      ],
+      "columns": [
+        {
+          "column_name": "attendance_id",
+          "data_type": "INTEGER",
+          "description": "Unique attendance record identifier.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "attendance",
+            "id",
+            "identifier",
+            "record",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "attendance",
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "primary"
+          ]
+        },
+        {
+          "column_name": "attendance_date",
+          "data_type": "TEXT",
+          "description": "Attendance date.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "attendance",
+            "date"
+          ]
+        },
+        {
+          "column_name": "check_in",
+          "data_type": "TEXT",
+          "description": "Employee check-in time.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "attendance",
+            "check",
+            "check-in",
+            "employee",
+            "in",
+            "time"
+          ]
+        },
+        {
+          "column_name": "check_out",
+          "data_type": "TEXT",
+          "description": "Employee check-out time.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "attendance",
+            "check",
+            "check-out",
+            "employee",
+            "out",
+            "time"
+          ]
+        },
+        {
+          "column_name": "status",
+          "data_type": "TEXT",
+          "description": "Attendance status such as Present, Absent, Half Day, Work From Home, or Holiday.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "absent",
+            "attendance",
+            "from",
+            "half",
+            "holiday",
+            "home",
+            "present",
+            "status",
+            "such",
+            "work"
+          ]
+        },
+        {
+          "column_name": "total_hours",
+          "data_type": "REAL",
+          "description": "Total working hours recorded for the attendance date.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "attendance",
+            "date",
+            "hours",
+            "recorded",
+            "total",
+            "working"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_attendance_employee_date",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_attendance_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Show absent employees in January",
+        "Calculate attendance percentage",
+        "List WFH days"
+      ],
+      "join_hints": [
+        "attendance.employee_id joins to employees.employee_id"
+      ]
+    },
+    {
+      "table_name": "clients",
+      "description": "Client companies with client code, name, industry, location, contact email, and contact phone.",
+      "business_purpose": "Use when users ask about customers, clients, client industries, client contacts, or client location.",
+      "aliases": [
+        "client",
+        "customer",
+        "account",
+        "industry",
+        "client contact",
+        "customer company"
+      ],
+      "keywords": [
+        "account",
+        "client",
+        "client contact",
+        "clients",
+        "customer",
+        "customer company",
+        "industry"
+      ],
+      "sample_row_count": 25,
+      "primary_key": [
+        "client_id"
+      ],
+      "columns": [
+        {
+          "column_name": "client_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a client.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "client",
+            "clients",
+            "foreign",
+            "id",
+            "identifying"
+          ]
+        },
+        {
+          "column_name": "client_code",
+          "data_type": "TEXT",
+          "description": "Unique short client code.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "client",
+            "clients",
+            "code",
+            "short",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "client_name",
+          "data_type": "TEXT",
+          "description": "Client company name.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "client",
+            "clients",
+            "company",
+            "name"
+          ]
+        },
+        {
+          "column_name": "industry",
+          "data_type": "TEXT",
+          "description": "Client industry classification.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "classification",
+            "client",
+            "clients",
+            "industry"
+          ]
+        },
+        {
+          "column_name": "location_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a geographic location.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "locations",
+            "column": "location_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "clients",
+            "foreign",
+            "geographic",
+            "id",
+            "identifying",
+            "location"
+          ]
+        },
+        {
+          "column_name": "contact_email",
+          "data_type": "TEXT",
+          "description": "Primary client contact email.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "client",
+            "clients",
+            "contact",
+            "email",
+            "primary"
+          ]
+        },
+        {
+          "column_name": "contact_phone",
+          "data_type": "TEXT",
+          "description": "Primary client contact phone number.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "client",
+            "clients",
+            "contact",
+            "number",
+            "phone",
+            "primary"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_clients_location_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_clients_3",
+          "is_unique": true
+        },
+        {
+          "index_name": "sqlite_autoindex_clients_2",
+          "is_unique": true
+        },
+        {
+          "index_name": "sqlite_autoindex_clients_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "List clients by industry",
+        "Show client contact details",
+        "Find clients in Pune"
+      ],
+      "join_hints": [
+        "clients.location_id joins to locations.location_id"
+      ]
+    },
+    {
+      "table_name": "departments",
+      "description": "Business departments such as Engineering, HR, Finance, Sales, and their budgets.",
+      "business_purpose": "Use when users ask about departments, department budgets, employees by department, or projects by department.",
+      "aliases": [
+        "department",
+        "function",
+        "business unit",
+        "division",
+        "budget"
+      ],
+      "keywords": [
+        "budget",
+        "business unit",
+        "department",
+        "departments",
+        "division",
+        "function"
+      ],
+      "sample_row_count": 10,
+      "primary_key": [
+        "department_id"
+      ],
+      "columns": [
+        {
+          "column_name": "department_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a department.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "department",
+            "departments",
+            "foreign",
+            "id",
+            "identifying"
+          ]
+        },
+        {
+          "column_name": "office_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a company office.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "offices",
+            "column": "office_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "company",
+            "departments",
+            "foreign",
+            "id",
+            "identifying",
+            "office"
+          ]
+        },
+        {
+          "column_name": "department_code",
+          "data_type": "TEXT",
+          "description": "Unique short department code.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "code",
+            "department",
+            "departments",
+            "short",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "department_name",
+          "data_type": "TEXT",
+          "description": "Department name such as Engineering, Finance, or Sales.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "department",
+            "departments",
+            "engineering",
+            "finance",
+            "name",
+            "sales",
+            "such"
+          ]
+        },
+        {
+          "column_name": "budget",
+          "data_type": "REAL",
+          "description": "Allocated department budget.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "allocated",
+            "budget",
+            "department",
+            "departments"
+          ]
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "TEXT",
+          "description": "Timestamp when the record was created.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "CURRENT_TIMESTAMP",
+          "references": null,
+          "retrieval_keywords": [
+            "at",
+            "created",
+            "departments",
+            "record",
+            "timestamp",
+            "when"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_departments_office_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_departments_2",
+          "is_unique": true
+        },
+        {
+          "index_name": "sqlite_autoindex_departments_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Count employees by department",
+        "List department budgets",
+        "Show projects by department"
+      ],
+      "join_hints": [
+        "departments.office_id joins to offices.office_id"
+      ]
+    },
+    {
+      "table_name": "designations",
+      "description": "Job titles and organizational levels with salary bands.",
+      "business_purpose": "Use when users ask about roles, job titles, seniority level, salary ranges, or designation-wise employees.",
+      "aliases": [
+        "designation",
+        "job title",
+        "role",
+        "position",
+        "level",
+        "salary band"
+      ],
+      "keywords": [
+        "designation",
+        "designations",
+        "job title",
+        "level",
+        "position",
+        "role",
+        "salary band"
+      ],
+      "sample_row_count": 12,
+      "primary_key": [
+        "designation_id"
+      ],
+      "columns": [
+        {
+          "column_name": "designation_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a job designation.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "designation",
+            "designations",
+            "foreign",
+            "id",
+            "identifying"
+          ]
+        },
+        {
+          "column_name": "title",
+          "data_type": "TEXT",
+          "description": "Job title such as Software Engineer or Product Manager.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "designations",
+            "engineer",
+            "manager",
+            "product",
+            "software",
+            "such",
+            "title"
+          ]
+        },
+        {
+          "column_name": "level_no",
+          "data_type": "INTEGER",
+          "description": "Organizational seniority level number.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "designations",
+            "level",
+            "no",
+            "number",
+            "organizational",
+            "seniority"
+          ]
+        },
+        {
+          "column_name": "min_salary",
+          "data_type": "REAL",
+          "description": "Minimum annual salary for the designation.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "annual",
+            "designation",
+            "designations",
+            "min",
+            "minimum",
+            "salary"
+          ]
+        },
+        {
+          "column_name": "max_salary",
+          "data_type": "REAL",
+          "description": "Maximum annual salary for the designation.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "annual",
+            "designation",
+            "designations",
+            "max",
+            "maximum",
+            "salary"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "sqlite_autoindex_designations_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Show all designations",
+        "Find employees by role",
+        "What is the salary range for Software Engineer?"
+      ],
+      "join_hints": []
+    },
+    {
+      "table_name": "employee_assets",
+      "description": "Asset assignment history connecting employees to assets with assigned date, returned date, and condition details.",
+      "business_purpose": "Use when users ask which employee has which asset, current asset assignment, returned assets, or asset condition on issue/return.",
+      "aliases": [
+        "asset assignment",
+        "employee asset",
+        "issued asset",
+        "returned asset",
+        "assigned laptop"
+      ],
+      "keywords": [
+        "asset assignment",
+        "assets",
+        "assigned laptop",
+        "employee",
+        "employee asset",
+        "issued asset",
+        "returned asset"
+      ],
+      "sample_row_count": 200,
+      "primary_key": [
+        "employee_asset_id"
+      ],
+      "columns": [
+        {
+          "column_name": "employee_asset_id",
+          "data_type": "INTEGER",
+          "description": "Unique employee asset assignment identifier.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "assignment",
+            "employee",
+            "id",
+            "identifier",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "assets",
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "primary"
+          ]
+        },
+        {
+          "column_name": "asset_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying an asset.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "assets",
+            "column": "asset_id",
+            "on_update": "NO ACTION",
+            "on_delete": "RESTRICT"
+          },
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "employee",
+            "foreign",
+            "id",
+            "identifying"
+          ]
+        },
+        {
+          "column_name": "assigned_on",
+          "data_type": "TEXT",
+          "description": "Date when the asset was assigned to the employee.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "assigned",
+            "date",
+            "employee",
+            "on",
+            "when"
+          ]
+        },
+        {
+          "column_name": "returned_on",
+          "data_type": "TEXT",
+          "description": "Date when the asset was returned; NULL means currently assigned.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "assigned",
+            "currently",
+            "date",
+            "employee",
+            "means",
+            "null",
+            "on",
+            "returned",
+            "when"
+          ]
+        },
+        {
+          "column_name": "condition_on_issue",
+          "data_type": "TEXT",
+          "description": "Condition of the asset when issued.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "condition",
+            "employee",
+            "issue",
+            "issued",
+            "on",
+            "when"
+          ]
+        },
+        {
+          "column_name": "condition_on_return",
+          "data_type": "TEXT",
+          "description": "Condition of the asset when returned.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "asset",
+            "assets",
+            "condition",
+            "employee",
+            "on",
+            "return",
+            "returned",
+            "when"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "ux_employee_assets_current",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Which assets are assigned to an employee?",
+        "List current asset assignments",
+        "Show returned assets"
+      ],
+      "join_hints": [
+        "employee_assets.asset_id joins to assets.asset_id",
+        "employee_assets.employee_id joins to employees.employee_id"
+      ]
+    },
+    {
+      "table_name": "employee_managers",
+      "description": "Employee reporting hierarchy table mapping each employee to a manager with effective dates.",
+      "business_purpose": "Use when users ask about managers, reporting structure, direct reports, hierarchy, supervisor, or manager chain.",
+      "aliases": [
+        "manager",
+        "supervisor",
+        "reporting manager",
+        "hierarchy",
+        "direct reports",
+        "org chart"
+      ],
+      "keywords": [
+        "direct reports",
+        "employee",
+        "hierarchy",
+        "manager",
+        "managers",
+        "org chart",
+        "reporting manager",
+        "supervisor"
+      ],
+      "sample_row_count": 199,
+      "primary_key": [
+        "manager_relation_id"
+      ],
+      "columns": [
+        {
+          "column_name": "manager_relation_id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for an employee-manager relationship record.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "employee",
+            "employee-manager",
+            "id",
+            "identifier",
+            "manager",
+            "managers",
+            "record",
+            "relation",
+            "relationship",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "managers",
+            "primary"
+          ]
+        },
+        {
+          "column_name": "manager_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying the manager employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "RESTRICT"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "manager",
+            "managers"
+          ]
+        },
+        {
+          "column_name": "effective_from",
+          "data_type": "TEXT",
+          "description": "Date from which the manager relationship is valid.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "date",
+            "effective",
+            "employee",
+            "from",
+            "manager",
+            "managers",
+            "relationship",
+            "valid",
+            "which"
+          ]
+        },
+        {
+          "column_name": "effective_to",
+          "data_type": "TEXT",
+          "description": "Date until which the manager relationship is valid; NULL means current manager.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "current",
+            "date",
+            "effective",
+            "employee",
+            "manager",
+            "managers",
+            "means",
+            "null",
+            "relationship",
+            "to",
+            "until",
+            "valid",
+            "which"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "ux_employee_managers_current",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Who is the manager of employee 120?",
+        "List direct reports for a manager",
+        "Show employee hierarchy"
+      ],
+      "join_hints": [
+        "employee_managers.manager_id joins to employees.employee_id",
+        "employee_managers.employee_id joins to employees.employee_id"
+      ]
+    },
+    {
+      "table_name": "employee_project_assignments",
+      "description": "Many-to-many assignment table connecting employees to projects with project role, allocation percentage, assignment dates, and billable flag.",
+      "business_purpose": "Use when users ask who works on a project, employee project allocation, billability, project roles, staffing, or utilization.",
+      "aliases": [
+        "assignment",
+        "project assignment",
+        "allocation",
+        "billable",
+        "staffing",
+        "utilization",
+        "resource allocation"
+      ],
+      "keywords": [
+        "allocation",
+        "assignment",
+        "assignments",
+        "billable",
+        "employee",
+        "project",
+        "project assignment",
+        "resource allocation",
+        "staffing",
+        "utilization"
+      ],
+      "sample_row_count": 500,
+      "primary_key": [
+        "assignment_id"
+      ],
+      "columns": [
+        {
+          "column_name": "assignment_id",
+          "data_type": "INTEGER",
+          "description": "Unique project assignment identifier.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "assignment",
+            "assignments",
+            "employee",
+            "id",
+            "identifier",
+            "project",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "assignments",
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "primary",
+            "project"
+          ]
+        },
+        {
+          "column_name": "project_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a project.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "projects",
+            "column": "project_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "assignments",
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "project"
+          ]
+        },
+        {
+          "column_name": "role_on_project",
+          "data_type": "TEXT",
+          "description": "Employee role on the project.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "assignments",
+            "employee",
+            "on",
+            "project",
+            "role"
+          ]
+        },
+        {
+          "column_name": "allocation_percent",
+          "data_type": "REAL",
+          "description": "Percentage allocation of the employee to the project.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "allocation",
+            "assignments",
+            "employee",
+            "percent",
+            "percentage",
+            "project"
+          ]
+        },
+        {
+          "column_name": "assigned_from",
+          "data_type": "TEXT",
+          "description": "Project assignment start date.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "assigned",
+            "assignment",
+            "assignments",
+            "date",
+            "employee",
+            "from",
+            "project",
+            "start"
+          ]
+        },
+        {
+          "column_name": "assigned_to",
+          "data_type": "TEXT",
+          "description": "Project assignment end date; NULL means ongoing.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "assigned",
+            "assignment",
+            "assignments",
+            "date",
+            "employee",
+            "means",
+            "null",
+            "ongoing",
+            "project",
+            "to"
+          ]
+        },
+        {
+          "column_name": "billable",
+          "data_type": "INTEGER",
+          "description": "Boolean-like integer flag showing whether assignment is billable.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "1",
+          "references": null,
+          "retrieval_keywords": [
+            "assignment",
+            "assignments",
+            "billable",
+            "boolean-like",
+            "employee",
+            "flag",
+            "integer",
+            "project",
+            "showing",
+            "whether"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_assignments_project_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "idx_assignments_employee_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_employee_project_assignments_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Which employees are assigned to project PRJ0001?",
+        "Find overallocated employees",
+        "Show billable allocations"
+      ],
+      "join_hints": [
+        "employee_project_assignments.project_id joins to projects.project_id",
+        "employee_project_assignments.employee_id joins to employees.employee_id"
+      ]
+    },
+    {
+      "table_name": "employee_skills",
+      "description": "Many-to-many table connecting employees to skills with proficiency level, years of experience, and certification flag.",
+      "business_purpose": "Use when users ask which employees have a skill, proficiency levels, certified employees, or years of experience.",
+      "aliases": [
+        "employee skill",
+        "proficiency",
+        "certification",
+        "certified",
+        "experience",
+        "expertise"
+      ],
+      "keywords": [
+        "certification",
+        "certified",
+        "employee",
+        "employee skill",
+        "experience",
+        "expertise",
+        "proficiency",
+        "skills"
+      ],
+      "sample_row_count": 400,
+      "primary_key": [
+        "employee_skill_id"
+      ],
+      "columns": [
+        {
+          "column_name": "employee_skill_id",
+          "data_type": "INTEGER",
+          "description": "Unique employee skill assignment identifier.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "assignment",
+            "employee",
+            "id",
+            "identifier",
+            "skill",
+            "skills",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "primary",
+            "skills"
+          ]
+        },
+        {
+          "column_name": "skill_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a skill.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "skills",
+            "column": "skill_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "skill",
+            "skills"
+          ]
+        },
+        {
+          "column_name": "proficiency_level",
+          "data_type": "TEXT",
+          "description": "Employee proficiency level for the skill.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "employee",
+            "level",
+            "proficiency",
+            "skill",
+            "skills"
+          ]
+        },
+        {
+          "column_name": "years_experience",
+          "data_type": "REAL",
+          "description": "Years of experience for the employee in the skill.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "employee",
+            "experience",
+            "skill",
+            "skills",
+            "years"
+          ]
+        },
+        {
+          "column_name": "certified",
+          "data_type": "INTEGER",
+          "description": "Boolean-like integer flag showing whether the employee is certified in the skill.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "boolean-like",
+            "certified",
+            "employee",
+            "flag",
+            "integer",
+            "showing",
+            "skill",
+            "skills",
+            "whether"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_employee_skills_skill_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_employee_skills_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Find employees with PostgreSQL skill",
+        "List certified employees",
+        "Show expert-level skills"
+      ],
+      "join_hints": [
+        "employee_skills.skill_id joins to skills.skill_id",
+        "employee_skills.employee_id joins to employees.employee_id"
+      ]
+    },
+    {
+      "table_name": "employee_training",
+      "description": "Employee training enrollments with enrolled date, completion date, status, and score.",
+      "business_purpose": "Use when users ask about employee training completion, enrollment, training scores, dropped trainings, or learning progress.",
+      "aliases": [
+        "employee training",
+        "enrollment",
+        "completed training",
+        "training score",
+        "learning progress"
+      ],
+      "keywords": [
+        "completed training",
+        "employee",
+        "employee training",
+        "enrollment",
+        "learning progress",
+        "training",
+        "training score"
+      ],
+      "sample_row_count": 300,
+      "primary_key": [
+        "employee_training_id"
+      ],
+      "columns": [
+        {
+          "column_name": "employee_training_id",
+          "data_type": "INTEGER",
+          "description": "Unique employee training enrollment identifier.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "employee",
+            "enrollment",
+            "id",
+            "identifier",
+            "training",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "primary",
+            "training"
+          ]
+        },
+        {
+          "column_name": "training_program_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a training program.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "training_programs",
+            "column": "training_program_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "program",
+            "training"
+          ]
+        },
+        {
+          "column_name": "enrolled_on",
+          "data_type": "TEXT",
+          "description": "Date when employee enrolled in training.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "date",
+            "employee",
+            "enrolled",
+            "on",
+            "training",
+            "when"
+          ]
+        },
+        {
+          "column_name": "completed_on",
+          "data_type": "TEXT",
+          "description": "Date when employee completed training; NULL if incomplete.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "completed",
+            "date",
+            "employee",
+            "incomplete",
+            "null",
+            "on",
+            "training",
+            "when"
+          ]
+        },
+        {
+          "column_name": "status",
+          "data_type": "TEXT",
+          "description": "Training enrollment status.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "'Enrolled'",
+          "references": null,
+          "retrieval_keywords": [
+            "employee",
+            "enrollment",
+            "status",
+            "training"
+          ]
+        },
+        {
+          "column_name": "score",
+          "data_type": "REAL",
+          "description": "Training score for completed training.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "completed",
+            "employee",
+            "score",
+            "training"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_training_employee_status",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_employee_training_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Show completed trainings",
+        "Find training scores by employee",
+        "Calculate completion rate"
+      ],
+      "join_hints": [
+        "employee_training.training_program_id joins to training_programs.training_program_id",
+        "employee_training.employee_id joins to employees.employee_id"
+      ]
+    },
+    {
+      "table_name": "employees",
+      "description": "Core employee master records with employee code, name, gender, date of birth, contact details, hire date, department, team, designation, office, and status.",
+      "business_purpose": "Use for most employee profile queries, employee directory lookups, headcount, contact details, status, joining date, and employee demographics.",
+      "aliases": [
+        "employee",
+        "staff",
+        "worker",
+        "associate",
+        "personnel",
+        "employee profile",
+        "headcount"
+      ],
+      "keywords": [
+        "associate",
+        "employee",
+        "employee profile",
+        "employees",
+        "headcount",
+        "personnel",
+        "staff",
+        "worker"
+      ],
+      "sample_row_count": 200,
+      "primary_key": [
+        "employee_id"
+      ],
+      "columns": [
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "employee",
+            "employees",
+            "foreign",
+            "id",
+            "identifying",
+            "primary"
+          ]
+        },
+        {
+          "column_name": "employee_code",
+          "data_type": "TEXT",
+          "description": "Unique employee business code.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "business",
+            "code",
+            "employee",
+            "employees",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "first_name",
+          "data_type": "TEXT",
+          "description": "Employee first name.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "employee",
+            "employees",
+            "first",
+            "name"
+          ]
+        },
+        {
+          "column_name": "last_name",
+          "data_type": "TEXT",
+          "description": "Employee last name or family name.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "employee",
+            "employees",
+            "family",
+            "last",
+            "name"
+          ]
+        },
+        {
+          "column_name": "gender",
+          "data_type": "TEXT",
+          "description": "Employee gender value from the allowed gender list.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "allowed",
+            "employee",
+            "employees",
+            "from",
+            "gender",
+            "list",
+            "value"
+          ]
+        },
+        {
+          "column_name": "date_of_birth",
+          "data_type": "TEXT",
+          "description": "Employee date of birth in ISO date format.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "birth",
+            "date",
+            "employee",
+            "employees",
+            "format",
+            "of"
+          ]
+        },
+        {
+          "column_name": "email",
+          "data_type": "TEXT",
+          "description": "Unique employee email address.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "address",
+            "email",
+            "employee",
+            "employees",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "phone",
+          "data_type": "TEXT",
+          "description": "Unique ten-digit employee phone number.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "employee",
+            "employees",
+            "number",
+            "phone",
+            "ten-digit",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "hire_date",
+          "data_type": "TEXT",
+          "description": "Date when the employee joined the company.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "company",
+            "date",
+            "employee",
+            "employees",
+            "hire",
+            "joined",
+            "when"
+          ]
+        },
+        {
+          "column_name": "department_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a department.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "departments",
+            "column": "department_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "department",
+            "employees",
+            "foreign",
+            "id",
+            "identifying"
+          ]
+        },
+        {
+          "column_name": "team_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a team.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "teams",
+            "column": "team_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "employees",
+            "foreign",
+            "id",
+            "identifying",
+            "team"
+          ]
+        },
+        {
+          "column_name": "designation_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a job designation.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "designations",
+            "column": "designation_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "designation",
+            "employees",
+            "foreign",
+            "id",
+            "identifying"
+          ]
+        },
+        {
+          "column_name": "office_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a company office.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "offices",
+            "column": "office_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "company",
+            "employees",
+            "foreign",
+            "id",
+            "identifying",
+            "office"
+          ]
+        },
+        {
+          "column_name": "employment_status",
+          "data_type": "TEXT",
+          "description": "Current employment status such as Active, On Leave, Resigned, or Terminated.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "'Active'",
+          "references": null,
+          "retrieval_keywords": [
+            "active",
+            "current",
+            "employees",
+            "employment",
+            "leave",
+            "resigned",
+            "status",
+            "such",
+            "terminated"
+          ]
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "TEXT",
+          "description": "Timestamp when the record was created.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "CURRENT_TIMESTAMP",
+          "references": null,
+          "retrieval_keywords": [
+            "at",
+            "created",
+            "employees",
+            "record",
+            "timestamp",
+            "when"
+          ]
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "TEXT",
+          "description": "Timestamp when the employee record was last updated.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "CURRENT_TIMESTAMP",
+          "references": null,
+          "retrieval_keywords": [
+            "at",
+            "employee",
+            "employees",
+            "last",
+            "record",
+            "timestamp",
+            "updated",
+            "when"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_employees_name",
+          "is_unique": false
+        },
+        {
+          "index_name": "idx_employees_office_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "idx_employees_designation_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "idx_employees_team_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "idx_employees_department_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_employees_3",
+          "is_unique": true
+        },
+        {
+          "index_name": "sqlite_autoindex_employees_2",
+          "is_unique": true
+        },
+        {
+          "index_name": "sqlite_autoindex_employees_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "List active employees",
+        "Find employee email and phone",
+        "Count employees by department"
+      ],
+      "join_hints": [
+        "employees.office_id joins to offices.office_id",
+        "employees.designation_id joins to designations.designation_id",
+        "employees.team_id joins to teams.team_id",
+        "employees.department_id joins to departments.department_id"
+      ]
+    },
+    {
+      "table_name": "leave_requests",
+      "description": "Employee leave applications with leave type, dates, reason, approver, request timestamp, and approval status.",
+      "business_purpose": "Use when users ask about leave, vacation, sick leave, approvals, pending leave, rejected leave, or approvers.",
+      "aliases": [
+        "leave",
+        "vacation",
+        "time off",
+        "sick leave",
+        "approval",
+        "leave request"
+      ],
+      "keywords": [
+        "approval",
+        "leave",
+        "leave request",
+        "requests",
+        "sick leave",
+        "time off",
+        "vacation"
+      ],
+      "sample_row_count": 500,
+      "primary_key": [
+        "leave_request_id"
+      ],
+      "columns": [
+        {
+          "column_name": "leave_request_id",
+          "data_type": "INTEGER",
+          "description": "Unique leave request identifier.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "id",
+            "identifier",
+            "leave",
+            "request",
+            "requests",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "leave",
+            "primary",
+            "requests"
+          ]
+        },
+        {
+          "column_name": "approver_id",
+          "data_type": "INTEGER",
+          "description": "Employee ID of the approver for the leave request.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "SET NULL"
+          },
+          "retrieval_keywords": [
+            "approver",
+            "employee",
+            "id",
+            "leave",
+            "request",
+            "requests"
+          ]
+        },
+        {
+          "column_name": "leave_type",
+          "data_type": "TEXT",
+          "description": "Type of leave requested.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "leave",
+            "requested",
+            "requests",
+            "type"
+          ]
+        },
+        {
+          "column_name": "start_date",
+          "data_type": "TEXT",
+          "description": "Leave start date.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "date",
+            "leave",
+            "requests",
+            "start"
+          ]
+        },
+        {
+          "column_name": "end_date",
+          "data_type": "TEXT",
+          "description": "Leave end date.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "date",
+            "end",
+            "leave",
+            "requests"
+          ]
+        },
+        {
+          "column_name": "reason",
+          "data_type": "TEXT",
+          "description": "Reason entered for leave request.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "entered",
+            "leave",
+            "reason",
+            "request",
+            "requests"
+          ]
+        },
+        {
+          "column_name": "status",
+          "data_type": "TEXT",
+          "description": "Approval status of the leave request.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "'Pending'",
+          "references": null,
+          "retrieval_keywords": [
+            "approval",
+            "leave",
+            "request",
+            "requests",
+            "status"
+          ]
+        },
+        {
+          "column_name": "requested_at",
+          "data_type": "TEXT",
+          "description": "Timestamp when leave was requested.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "CURRENT_TIMESTAMP",
+          "references": null,
+          "retrieval_keywords": [
+            "at",
+            "leave",
+            "requested",
+            "requests",
+            "timestamp",
+            "when"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_leave_employee_status",
+          "is_unique": false
+        }
+      ],
+      "example_user_queries": [
+        "List pending leave requests",
+        "Show approved sick leave",
+        "Who approved employee leave?"
+      ],
+      "join_hints": [
+        "leave_requests.approver_id joins to employees.employee_id",
+        "leave_requests.employee_id joins to employees.employee_id"
+      ]
+    },
+    {
+      "table_name": "locations",
+      "description": "Master list of geographic locations such as Indian cities, states, country, postal code, and timezone.",
+      "business_purpose": "Use when users ask about city, state, country, postal code, office geography, client geography, or where an office/client is located.",
+      "aliases": [
+        "location",
+        "city",
+        "state",
+        "geography",
+        "region",
+        "place",
+        "postal code",
+        "pin code"
+      ],
+      "keywords": [
+        "city",
+        "geography",
+        "location",
+        "locations",
+        "pin code",
+        "place",
+        "postal code",
+        "region",
+        "state"
+      ],
+      "sample_row_count": 10,
+      "primary_key": [
+        "location_id"
+      ],
+      "columns": [
+        {
+          "column_name": "location_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a geographic location.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "foreign",
+            "geographic",
+            "id",
+            "identifying",
+            "location",
+            "locations"
+          ]
+        },
+        {
+          "column_name": "city",
+          "data_type": "TEXT",
+          "description": "City name, for example Bengaluru, Hyderabad, Pune, or Chennai.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "bengaluru",
+            "chennai",
+            "city",
+            "example",
+            "hyderabad",
+            "locations",
+            "name",
+            "pune"
+          ]
+        },
+        {
+          "column_name": "state",
+          "data_type": "TEXT",
+          "description": "Indian state or union territory for the location.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "indian",
+            "location",
+            "locations",
+            "state",
+            "territory",
+            "union"
+          ]
+        },
+        {
+          "column_name": "country",
+          "data_type": "TEXT",
+          "description": "Country name. Defaults to India.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "'India'",
+          "references": null,
+          "retrieval_keywords": [
+            "country",
+            "defaults",
+            "india",
+            "locations",
+            "name"
+          ]
+        },
+        {
+          "column_name": "postal_code",
+          "data_type": "TEXT",
+          "description": "Six-digit Indian postal or PIN code.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "code",
+            "indian",
+            "locations",
+            "postal",
+            "six-digit"
+          ]
+        },
+        {
+          "column_name": "timezone",
+          "data_type": "TEXT",
+          "description": "Timezone string for the location, usually Asia/Kolkata.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "'Asia/Kolkata'",
+          "references": null,
+          "retrieval_keywords": [
+            "asia/kolkata",
+            "location",
+            "locations",
+            "string",
+            "timezone",
+            "usually"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "sqlite_autoindex_locations_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Which locations are present?",
+        "Find offices in Bengaluru",
+        "Show clients by city"
+      ],
+      "join_hints": []
+    },
+    {
+      "table_name": "offices",
+      "description": "Company office branches linked to physical locations, including office code, name, address, phone, and head-office flag.",
+      "business_purpose": "Use when users ask about branches, office addresses, head office, office phone numbers, or employee work office.",
+      "aliases": [
+        "office",
+        "branch",
+        "workplace",
+        "head office",
+        "address",
+        "office location"
+      ],
+      "keywords": [
+        "address",
+        "branch",
+        "head office",
+        "office",
+        "office location",
+        "offices",
+        "workplace"
+      ],
+      "sample_row_count": 5,
+      "primary_key": [
+        "office_id"
+      ],
+      "columns": [
+        {
+          "column_name": "office_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a company office.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "company",
+            "foreign",
+            "id",
+            "identifying",
+            "office",
+            "offices"
+          ]
+        },
+        {
+          "column_name": "location_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a geographic location.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "locations",
+            "column": "location_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "foreign",
+            "geographic",
+            "id",
+            "identifying",
+            "location",
+            "offices"
+          ]
+        },
+        {
+          "column_name": "office_code",
+          "data_type": "TEXT",
+          "description": "Unique short code for an office branch.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "branch",
+            "code",
+            "office",
+            "offices",
+            "short",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "office_name",
+          "data_type": "TEXT",
+          "description": "Full office branch name.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "branch",
+            "full",
+            "name",
+            "office",
+            "offices"
+          ]
+        },
+        {
+          "column_name": "address_line1",
+          "data_type": "TEXT",
+          "description": "Primary office street or business-center address.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "address",
+            "business-center",
+            "line1",
+            "office",
+            "offices",
+            "primary",
+            "street"
+          ]
+        },
+        {
+          "column_name": "address_line2",
+          "data_type": "TEXT",
+          "description": "Additional address details such as area or landmark.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "additional",
+            "address",
+            "area",
+            "details",
+            "landmark",
+            "line2",
+            "offices",
+            "such"
+          ]
+        },
+        {
+          "column_name": "phone",
+          "data_type": "TEXT",
+          "description": "Ten-digit office phone number.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "number",
+            "office",
+            "offices",
+            "phone",
+            "ten-digit"
+          ]
+        },
+        {
+          "column_name": "is_head_office",
+          "data_type": "INTEGER",
+          "description": "Boolean-like integer flag: 1 for head office, 0 otherwise.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "boolean-like",
+            "flag:",
+            "head",
+            "integer",
+            "is",
+            "office",
+            "offices",
+            "otherwise"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_offices_location_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_offices_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "List all offices",
+        "Which office is head office?",
+        "Show employees by office"
+      ],
+      "join_hints": [
+        "offices.location_id joins to locations.location_id"
+      ]
+    },
+    {
+      "table_name": "payroll",
+      "description": "Monthly employee payroll with salary components, deductions, net salary, payment status, and paid date.",
+      "business_purpose": "Use when users ask about salary, payroll cost, deductions, HRA, allowances, net salary, paid employees, or monthly payroll.",
+      "aliases": [
+        "payroll",
+        "salary",
+        "compensation",
+        "net salary",
+        "deductions",
+        "allowances",
+        "payment"
+      ],
+      "keywords": [
+        "allowances",
+        "compensation",
+        "deductions",
+        "net salary",
+        "payment",
+        "payroll",
+        "salary"
+      ],
+      "sample_row_count": 200,
+      "primary_key": [
+        "payroll_id"
+      ],
+      "columns": [
+        {
+          "column_name": "payroll_id",
+          "data_type": "INTEGER",
+          "description": "Unique payroll record identifier.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "id",
+            "identifier",
+            "payroll",
+            "record",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "payroll",
+            "primary"
+          ]
+        },
+        {
+          "column_name": "payroll_month",
+          "data_type": "TEXT",
+          "description": "Payroll month represented as the first day of the month.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "first",
+            "month",
+            "payroll",
+            "represented"
+          ]
+        },
+        {
+          "column_name": "basic_salary",
+          "data_type": "REAL",
+          "description": "Basic salary component for the payroll month.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "basic",
+            "component",
+            "month",
+            "payroll",
+            "salary"
+          ]
+        },
+        {
+          "column_name": "hra",
+          "data_type": "REAL",
+          "description": "House rent allowance component.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "allowance",
+            "component",
+            "house",
+            "hra",
+            "payroll",
+            "rent"
+          ]
+        },
+        {
+          "column_name": "allowances",
+          "data_type": "REAL",
+          "description": "Other allowance amount.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "allowance",
+            "allowances",
+            "amount",
+            "other",
+            "payroll"
+          ]
+        },
+        {
+          "column_name": "deductions",
+          "data_type": "REAL",
+          "description": "Deduction amount.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "amount",
+            "deduction",
+            "deductions",
+            "payroll"
+          ]
+        },
+        {
+          "column_name": "net_salary",
+          "data_type": "REAL",
+          "description": "Final net salary after allowances and deductions.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "after",
+            "allowances",
+            "deductions",
+            "final",
+            "net",
+            "payroll",
+            "salary"
+          ]
+        },
+        {
+          "column_name": "payment_status",
+          "data_type": "TEXT",
+          "description": "Payroll payment status.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "'Pending'",
+          "references": null,
+          "retrieval_keywords": [
+            "payment",
+            "payroll",
+            "status"
+          ]
+        },
+        {
+          "column_name": "paid_on",
+          "data_type": "TEXT",
+          "description": "Date on which payroll was paid.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "date",
+            "on",
+            "paid",
+            "payroll",
+            "which"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_payroll_month",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_payroll_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "Show monthly payroll cost",
+        "Find highest paid employees",
+        "List pending salary payments"
+      ],
+      "join_hints": [
+        "payroll.employee_id joins to employees.employee_id"
+      ]
+    },
+    {
+      "table_name": "performance_reviews",
+      "description": "Employee performance review records with reviewer, review period, rating, goals met percentage, comments, and reviewed date.",
+      "business_purpose": "Use when users ask about employee ratings, performance, goals met, reviewer feedback, appraisals, or review trends.",
+      "aliases": [
+        "performance",
+        "review",
+        "rating",
+        "appraisal",
+        "goals",
+        "feedback"
+      ],
+      "keywords": [
+        "appraisal",
+        "feedback",
+        "goals",
+        "performance",
+        "rating",
+        "review",
+        "reviews"
+      ],
+      "sample_row_count": 300,
+      "primary_key": [
+        "review_id"
+      ],
+      "columns": [
+        {
+          "column_name": "review_id",
+          "data_type": "INTEGER",
+          "description": "Unique performance review identifier.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "id",
+            "identifier",
+            "performance",
+            "review",
+            "reviews",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "employee_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key or primary key identifying an employee.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "foreign",
+            "id",
+            "identifying",
+            "performance",
+            "primary",
+            "reviews"
+          ]
+        },
+        {
+          "column_name": "reviewer_id",
+          "data_type": "INTEGER",
+          "description": "Employee ID of the reviewer.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "employees",
+            "column": "employee_id",
+            "on_update": "NO ACTION",
+            "on_delete": "RESTRICT"
+          },
+          "retrieval_keywords": [
+            "employee",
+            "id",
+            "performance",
+            "reviewer",
+            "reviews"
+          ]
+        },
+        {
+          "column_name": "review_period_start",
+          "data_type": "TEXT",
+          "description": "Start date of the review period.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "date",
+            "performance",
+            "period",
+            "review",
+            "reviews",
+            "start"
+          ]
+        },
+        {
+          "column_name": "review_period_end",
+          "data_type": "TEXT",
+          "description": "End date of the review period.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "date",
+            "end",
+            "performance",
+            "period",
+            "review",
+            "reviews"
+          ]
+        },
+        {
+          "column_name": "rating",
+          "data_type": "REAL",
+          "description": "Performance rating between 1 and 5.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "between",
+            "performance",
+            "rating",
+            "reviews"
+          ]
+        },
+        {
+          "column_name": "goals_met_percent",
+          "data_type": "REAL",
+          "description": "Percentage of goals met during the review period.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "during",
+            "goals",
+            "met",
+            "percent",
+            "percentage",
+            "performance",
+            "period",
+            "review",
+            "reviews"
+          ]
+        },
+        {
+          "column_name": "comments",
+          "data_type": "TEXT",
+          "description": "Reviewer comments.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "comments",
+            "performance",
+            "reviewer",
+            "reviews"
+          ]
+        },
+        {
+          "column_name": "reviewed_at",
+          "data_type": "TEXT",
+          "description": "Date when the review was completed.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "CURRENT_DATE",
+          "references": null,
+          "retrieval_keywords": [
+            "at",
+            "completed",
+            "date",
+            "performance",
+            "review",
+            "reviewed",
+            "reviews",
+            "when"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_reviews_employee_period",
+          "is_unique": false
+        }
+      ],
+      "example_user_queries": [
+        "Rank employees by rating",
+        "Show reviews by manager",
+        "Find employees with rating above 4"
+      ],
+      "join_hints": [
+        "performance_reviews.reviewer_id joins to employees.employee_id",
+        "performance_reviews.employee_id joins to employees.employee_id"
+      ]
+    },
+    {
+      "table_name": "projects",
+      "description": "Client projects owned by departments, with project code, name, dates, status, budget, and current assignment count.",
+      "business_purpose": "Use when users ask about projects, project budgets, project status, client work, project timelines, or project staffing counts.",
+      "aliases": [
+        "project",
+        "engagement",
+        "delivery",
+        "client project",
+        "project budget",
+        "project status"
+      ],
+      "keywords": [
+        "client project",
+        "delivery",
+        "engagement",
+        "project",
+        "project budget",
+        "project status",
+        "projects"
+      ],
+      "sample_row_count": 50,
+      "primary_key": [
+        "project_id"
+      ],
+      "columns": [
+        {
+          "column_name": "project_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a project.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "foreign",
+            "id",
+            "identifying",
+            "project",
+            "projects"
+          ]
+        },
+        {
+          "column_name": "client_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a client.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "clients",
+            "column": "client_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "client",
+            "foreign",
+            "id",
+            "identifying",
+            "projects"
+          ]
+        },
+        {
+          "column_name": "department_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a department.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "departments",
+            "column": "department_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "department",
+            "foreign",
+            "id",
+            "identifying",
+            "projects"
+          ]
+        },
+        {
+          "column_name": "project_code",
+          "data_type": "TEXT",
+          "description": "Unique short project code.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "code",
+            "project",
+            "projects",
+            "short",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "project_name",
+          "data_type": "TEXT",
+          "description": "Project display name.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "display",
+            "name",
+            "project",
+            "projects"
+          ]
+        },
+        {
+          "column_name": "start_date",
+          "data_type": "TEXT",
+          "description": "Project start date.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "date",
+            "project",
+            "projects",
+            "start"
+          ]
+        },
+        {
+          "column_name": "end_date",
+          "data_type": "TEXT",
+          "description": "Project end date; NULL for ongoing or planned projects.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "date",
+            "end",
+            "null",
+            "ongoing",
+            "planned",
+            "project",
+            "projects"
+          ]
+        },
+        {
+          "column_name": "status",
+          "data_type": "TEXT",
+          "description": "Project lifecycle status.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "'Planned'",
+          "references": null,
+          "retrieval_keywords": [
+            "lifecycle",
+            "project",
+            "projects",
+            "status"
+          ]
+        },
+        {
+          "column_name": "budget",
+          "data_type": "REAL",
+          "description": "Project budget amount.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "amount",
+            "budget",
+            "project",
+            "projects"
+          ]
+        },
+        {
+          "column_name": "current_assignment_count",
+          "data_type": "INTEGER",
+          "description": "Cached count of currently active project assignments.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": "0",
+          "references": null,
+          "retrieval_keywords": [
+            "active",
+            "assignment",
+            "assignments",
+            "cached",
+            "count",
+            "current",
+            "currently",
+            "project",
+            "projects"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_projects_department_status",
+          "is_unique": false
+        },
+        {
+          "index_name": "idx_projects_client_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_projects_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "List active projects",
+        "Show projects for a client",
+        "Find project budgets by department"
+      ],
+      "join_hints": [
+        "projects.department_id joins to departments.department_id",
+        "projects.client_id joins to clients.client_id"
+      ]
+    },
+    {
+      "table_name": "skills",
+      "description": "Skill master list with skill names and categories such as Database, Programming, Cloud, DevOps, and Analytics.",
+      "business_purpose": "Use when users ask about available skills, skill categories, or skill taxonomy.",
+      "aliases": [
+        "skill",
+        "competency",
+        "technology",
+        "capability",
+        "expertise"
+      ],
+      "keywords": [
+        "capability",
+        "competency",
+        "expertise",
+        "skill",
+        "skills",
+        "technology"
+      ],
+      "sample_row_count": 30,
+      "primary_key": [
+        "skill_id"
+      ],
+      "columns": [
+        {
+          "column_name": "skill_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a skill.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "foreign",
+            "id",
+            "identifying",
+            "skill",
+            "skills"
+          ]
+        },
+        {
+          "column_name": "skill_name",
+          "data_type": "TEXT",
+          "description": "Skill name such as SQLite, Python, AWS, or React.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "name",
+            "python",
+            "react",
+            "skill",
+            "skills",
+            "sqlite",
+            "such"
+          ]
+        },
+        {
+          "column_name": "skill_category",
+          "data_type": "TEXT",
+          "description": "Skill category such as Database, Programming, Cloud, or DevOps.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "category",
+            "cloud",
+            "database",
+            "devops",
+            "programming",
+            "skill",
+            "skills",
+            "such"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "sqlite_autoindex_skills_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "List all skills",
+        "Show skills by category",
+        "Find database skills"
+      ],
+      "join_hints": []
+    },
+    {
+      "table_name": "teams",
+      "description": "Teams within departments, such as Platform, Backend Services, People Ops, and Data Science.",
+      "business_purpose": "Use when users ask about team membership, teams within a department, or employee team assignment.",
+      "aliases": [
+        "team",
+        "squad",
+        "group",
+        "unit"
+      ],
+      "keywords": [
+        "group",
+        "squad",
+        "team",
+        "teams",
+        "unit"
+      ],
+      "sample_row_count": 20,
+      "primary_key": [
+        "team_id"
+      ],
+      "columns": [
+        {
+          "column_name": "team_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a team.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "foreign",
+            "id",
+            "identifying",
+            "team",
+            "teams"
+          ]
+        },
+        {
+          "column_name": "department_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a department.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "departments",
+            "column": "department_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "department",
+            "foreign",
+            "id",
+            "identifying",
+            "teams"
+          ]
+        },
+        {
+          "column_name": "team_code",
+          "data_type": "TEXT",
+          "description": "Unique short team code.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "code",
+            "short",
+            "team",
+            "teams",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "team_name",
+          "data_type": "TEXT",
+          "description": "Team name within a department.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "department",
+            "name",
+            "team",
+            "teams",
+            "within"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "idx_teams_department_id",
+          "is_unique": false
+        },
+        {
+          "index_name": "sqlite_autoindex_teams_2",
+          "is_unique": true
+        },
+        {
+          "index_name": "sqlite_autoindex_teams_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "List teams in Engineering",
+        "Show employees by team",
+        "Which department owns each team?"
+      ],
+      "join_hints": [
+        "teams.department_id joins to departments.department_id"
+      ]
+    },
+    {
+      "table_name": "training_programs",
+      "description": "Training program catalog with department, program code, program name, provider, duration, and mode.",
+      "business_purpose": "Use when users ask about available training programs, providers, training mode, training duration, or department-sponsored programs.",
+      "aliases": [
+        "training program",
+        "course",
+        "learning",
+        "provider",
+        "training catalog"
+      ],
+      "keywords": [
+        "course",
+        "learning",
+        "programs",
+        "provider",
+        "training",
+        "training catalog",
+        "training program"
+      ],
+      "sample_row_count": 30,
+      "primary_key": [
+        "training_program_id"
+      ],
+      "columns": [
+        {
+          "column_name": "training_program_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a training program.",
+          "semantic_role": "primary_key",
+          "is_primary_key": true,
+          "is_nullable": true,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "foreign",
+            "id",
+            "identifying",
+            "program",
+            "programs",
+            "training"
+          ]
+        },
+        {
+          "column_name": "department_id",
+          "data_type": "INTEGER",
+          "description": "Foreign key identifying a department.",
+          "semantic_role": "foreign_key",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": {
+            "table": "departments",
+            "column": "department_id",
+            "on_update": "CASCADE",
+            "on_delete": "NO ACTION"
+          },
+          "retrieval_keywords": [
+            "department",
+            "foreign",
+            "id",
+            "identifying",
+            "programs",
+            "training"
+          ]
+        },
+        {
+          "column_name": "program_code",
+          "data_type": "TEXT",
+          "description": "Unique training program code.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "code",
+            "program",
+            "programs",
+            "training",
+            "unique"
+          ]
+        },
+        {
+          "column_name": "program_name",
+          "data_type": "TEXT",
+          "description": "Training program name.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "name",
+            "program",
+            "programs",
+            "training"
+          ]
+        },
+        {
+          "column_name": "provider",
+          "data_type": "TEXT",
+          "description": "Training provider name.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "name",
+            "programs",
+            "provider",
+            "training"
+          ]
+        },
+        {
+          "column_name": "duration_hours",
+          "data_type": "REAL",
+          "description": "Training duration in hours.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "duration",
+            "hours",
+            "programs",
+            "training"
+          ]
+        },
+        {
+          "column_name": "mode",
+          "data_type": "TEXT",
+          "description": "Training delivery mode: Online, Classroom, or Hybrid.",
+          "semantic_role": "attribute",
+          "is_primary_key": false,
+          "is_nullable": false,
+          "default_value": null,
+          "references": null,
+          "retrieval_keywords": [
+            "classroom",
+            "delivery",
+            "hybrid",
+            "mode",
+            "mode:",
+            "online",
+            "programs",
+            "training"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "index_name": "sqlite_autoindex_training_programs_1",
+          "is_unique": true
+        }
+      ],
+      "example_user_queries": [
+        "List training programs",
+        "Show online trainings",
+        "Find trainings by department"
+      ],
+      "join_hints": [
+        "training_programs.department_id joins to departments.department_id"
+      ]
+    }
+  ],
+  "foreign_key_relationships": [
+    {
+      "from_table": "assets",
+      "from_column": "office_id",
+      "to_table": "offices",
+      "to_column": "office_id",
+      "relationship_type": "many_to_one",
+      "description": "assets.office_id joins to offices.office_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "attendance",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "attendance.employee_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "clients",
+      "from_column": "location_id",
+      "to_table": "locations",
+      "to_column": "location_id",
+      "relationship_type": "many_to_one",
+      "description": "clients.location_id joins to locations.location_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "departments",
+      "from_column": "office_id",
+      "to_table": "offices",
+      "to_column": "office_id",
+      "relationship_type": "many_to_one",
+      "description": "departments.office_id joins to offices.office_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "employee_assets",
+      "from_column": "asset_id",
+      "to_table": "assets",
+      "to_column": "asset_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_assets.asset_id joins to assets.asset_id",
+      "on_update": "NO ACTION",
+      "on_delete": "RESTRICT"
+    },
+    {
+      "from_table": "employee_assets",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_assets.employee_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_managers",
+      "from_column": "manager_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_managers.manager_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "RESTRICT"
+    },
+    {
+      "from_table": "employee_managers",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_managers.employee_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_project_assignments",
+      "from_column": "project_id",
+      "to_table": "projects",
+      "to_column": "project_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_project_assignments.project_id joins to projects.project_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_project_assignments",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_project_assignments.employee_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_skills",
+      "from_column": "skill_id",
+      "to_table": "skills",
+      "to_column": "skill_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_skills.skill_id joins to skills.skill_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_skills",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_skills.employee_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_training",
+      "from_column": "training_program_id",
+      "to_table": "training_programs",
+      "to_column": "training_program_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_training.training_program_id joins to training_programs.training_program_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_training",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "employee_training.employee_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employees",
+      "from_column": "office_id",
+      "to_table": "offices",
+      "to_column": "office_id",
+      "relationship_type": "many_to_one",
+      "description": "employees.office_id joins to offices.office_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "employees",
+      "from_column": "designation_id",
+      "to_table": "designations",
+      "to_column": "designation_id",
+      "relationship_type": "many_to_one",
+      "description": "employees.designation_id joins to designations.designation_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "employees",
+      "from_column": "team_id",
+      "to_table": "teams",
+      "to_column": "team_id",
+      "relationship_type": "many_to_one",
+      "description": "employees.team_id joins to teams.team_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "employees",
+      "from_column": "department_id",
+      "to_table": "departments",
+      "to_column": "department_id",
+      "relationship_type": "many_to_one",
+      "description": "employees.department_id joins to departments.department_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "leave_requests",
+      "from_column": "approver_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "leave_requests.approver_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    },
+    {
+      "from_table": "leave_requests",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "leave_requests.employee_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "offices",
+      "from_column": "location_id",
+      "to_table": "locations",
+      "to_column": "location_id",
+      "relationship_type": "many_to_one",
+      "description": "offices.location_id joins to locations.location_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "payroll",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "payroll.employee_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "performance_reviews",
+      "from_column": "reviewer_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "performance_reviews.reviewer_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "RESTRICT"
+    },
+    {
+      "from_table": "performance_reviews",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "relationship_type": "many_to_one",
+      "description": "performance_reviews.employee_id joins to employees.employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "projects",
+      "from_column": "department_id",
+      "to_table": "departments",
+      "to_column": "department_id",
+      "relationship_type": "many_to_one",
+      "description": "projects.department_id joins to departments.department_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "projects",
+      "from_column": "client_id",
+      "to_table": "clients",
+      "to_column": "client_id",
+      "relationship_type": "many_to_one",
+      "description": "projects.client_id joins to clients.client_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "teams",
+      "from_column": "department_id",
+      "to_table": "departments",
+      "to_column": "department_id",
+      "relationship_type": "many_to_one",
+      "description": "teams.department_id joins to departments.department_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "training_programs",
+      "from_column": "department_id",
+      "to_table": "departments",
+      "to_column": "department_id",
+      "relationship_type": "many_to_one",
+      "description": "training_programs.department_id joins to departments.department_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    }
+  ],
+  "networkx_graph_metadata": {
+    "node_type": "table",
+    "edge_type": "foreign_key",
+    "directed_edge_meaning": "child_table.foreign_key_column -> parent_table.primary_key_column",
+    "networkx_edge_columns": [
+      "from_table",
+      "from_column",
+      "to_table",
+      "to_column"
+    ],
+    "edges": [
+      {
+        "source": "assets",
+        "target": "offices",
+        "from_table": "assets",
+        "from_column": "office_id",
+        "to_table": "offices",
+        "to_column": "office_id",
+        "label": "assets.office_id -> offices.office_id"
+      },
+      {
+        "source": "attendance",
+        "target": "employees",
+        "from_table": "attendance",
+        "from_column": "employee_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "attendance.employee_id -> employees.employee_id"
+      },
+      {
+        "source": "clients",
+        "target": "locations",
+        "from_table": "clients",
+        "from_column": "location_id",
+        "to_table": "locations",
+        "to_column": "location_id",
+        "label": "clients.location_id -> locations.location_id"
+      },
+      {
+        "source": "departments",
+        "target": "offices",
+        "from_table": "departments",
+        "from_column": "office_id",
+        "to_table": "offices",
+        "to_column": "office_id",
+        "label": "departments.office_id -> offices.office_id"
+      },
+      {
+        "source": "employee_assets",
+        "target": "assets",
+        "from_table": "employee_assets",
+        "from_column": "asset_id",
+        "to_table": "assets",
+        "to_column": "asset_id",
+        "label": "employee_assets.asset_id -> assets.asset_id"
+      },
+      {
+        "source": "employee_assets",
+        "target": "employees",
+        "from_table": "employee_assets",
+        "from_column": "employee_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "employee_assets.employee_id -> employees.employee_id"
+      },
+      {
+        "source": "employee_managers",
+        "target": "employees",
+        "from_table": "employee_managers",
+        "from_column": "manager_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "employee_managers.manager_id -> employees.employee_id"
+      },
+      {
+        "source": "employee_managers",
+        "target": "employees",
+        "from_table": "employee_managers",
+        "from_column": "employee_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "employee_managers.employee_id -> employees.employee_id"
+      },
+      {
+        "source": "employee_project_assignments",
+        "target": "projects",
+        "from_table": "employee_project_assignments",
+        "from_column": "project_id",
+        "to_table": "projects",
+        "to_column": "project_id",
+        "label": "employee_project_assignments.project_id -> projects.project_id"
+      },
+      {
+        "source": "employee_project_assignments",
+        "target": "employees",
+        "from_table": "employee_project_assignments",
+        "from_column": "employee_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "employee_project_assignments.employee_id -> employees.employee_id"
+      },
+      {
+        "source": "employee_skills",
+        "target": "skills",
+        "from_table": "employee_skills",
+        "from_column": "skill_id",
+        "to_table": "skills",
+        "to_column": "skill_id",
+        "label": "employee_skills.skill_id -> skills.skill_id"
+      },
+      {
+        "source": "employee_skills",
+        "target": "employees",
+        "from_table": "employee_skills",
+        "from_column": "employee_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "employee_skills.employee_id -> employees.employee_id"
+      },
+      {
+        "source": "employee_training",
+        "target": "training_programs",
+        "from_table": "employee_training",
+        "from_column": "training_program_id",
+        "to_table": "training_programs",
+        "to_column": "training_program_id",
+        "label": "employee_training.training_program_id -> training_programs.training_program_id"
+      },
+      {
+        "source": "employee_training",
+        "target": "employees",
+        "from_table": "employee_training",
+        "from_column": "employee_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "employee_training.employee_id -> employees.employee_id"
+      },
+      {
+        "source": "employees",
+        "target": "offices",
+        "from_table": "employees",
+        "from_column": "office_id",
+        "to_table": "offices",
+        "to_column": "office_id",
+        "label": "employees.office_id -> offices.office_id"
+      },
+      {
+        "source": "employees",
+        "target": "designations",
+        "from_table": "employees",
+        "from_column": "designation_id",
+        "to_table": "designations",
+        "to_column": "designation_id",
+        "label": "employees.designation_id -> designations.designation_id"
+      },
+      {
+        "source": "employees",
+        "target": "teams",
+        "from_table": "employees",
+        "from_column": "team_id",
+        "to_table": "teams",
+        "to_column": "team_id",
+        "label": "employees.team_id -> teams.team_id"
+      },
+      {
+        "source": "employees",
+        "target": "departments",
+        "from_table": "employees",
+        "from_column": "department_id",
+        "to_table": "departments",
+        "to_column": "department_id",
+        "label": "employees.department_id -> departments.department_id"
+      },
+      {
+        "source": "leave_requests",
+        "target": "employees",
+        "from_table": "leave_requests",
+        "from_column": "approver_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "leave_requests.approver_id -> employees.employee_id"
+      },
+      {
+        "source": "leave_requests",
+        "target": "employees",
+        "from_table": "leave_requests",
+        "from_column": "employee_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "leave_requests.employee_id -> employees.employee_id"
+      },
+      {
+        "source": "offices",
+        "target": "locations",
+        "from_table": "offices",
+        "from_column": "location_id",
+        "to_table": "locations",
+        "to_column": "location_id",
+        "label": "offices.location_id -> locations.location_id"
+      },
+      {
+        "source": "payroll",
+        "target": "employees",
+        "from_table": "payroll",
+        "from_column": "employee_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "payroll.employee_id -> employees.employee_id"
+      },
+      {
+        "source": "performance_reviews",
+        "target": "employees",
+        "from_table": "performance_reviews",
+        "from_column": "reviewer_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "performance_reviews.reviewer_id -> employees.employee_id"
+      },
+      {
+        "source": "performance_reviews",
+        "target": "employees",
+        "from_table": "performance_reviews",
+        "from_column": "employee_id",
+        "to_table": "employees",
+        "to_column": "employee_id",
+        "label": "performance_reviews.employee_id -> employees.employee_id"
+      },
+      {
+        "source": "projects",
+        "target": "departments",
+        "from_table": "projects",
+        "from_column": "department_id",
+        "to_table": "departments",
+        "to_column": "department_id",
+        "label": "projects.department_id -> departments.department_id"
+      },
+      {
+        "source": "projects",
+        "target": "clients",
+        "from_table": "projects",
+        "from_column": "client_id",
+        "to_table": "clients",
+        "to_column": "client_id",
+        "label": "projects.client_id -> clients.client_id"
+      },
+      {
+        "source": "teams",
+        "target": "departments",
+        "from_table": "teams",
+        "from_column": "department_id",
+        "to_table": "departments",
+        "to_column": "department_id",
+        "label": "teams.department_id -> departments.department_id"
+      },
+      {
+        "source": "training_programs",
+        "target": "departments",
+        "from_table": "training_programs",
+        "from_column": "department_id",
+        "to_table": "departments",
+        "to_column": "department_id",
+        "label": "training_programs.department_id -> departments.department_id"
+      }
+    ],
+    "python_example": "import json\nimport networkx as nx\n\nwith open('employee_management_retrieval_metadata.json', 'r', encoding='utf-8') as f:\n    metadata = json.load(f)\n\nG = nx.DiGraph()\nfor table in metadata['tables']:\n    G.add_node(table['table_name'], description=table['description'], aliases=table['aliases'])\n\nfor edge in metadata['networkx_graph_metadata']['edges']:\n    G.add_edge(edge['source'], edge['target'], from_column=edge['from_column'], to_column=edge['to_column'], label=edge['label'])\n"
+  }
+}

@@ -1,0 +1,610 @@
+{
+  "database_name": "Employee Management System",
+  "tables": [
+    {
+      "table_name": "assets",
+      "description": "Stores organizational physical assets, equipment, devices, hardware, and deployment status assigned to offices.",
+      "keywords": ["hardware", "laptop", "computer", "device", "serial number", "brand", "purchase date", "equipment status"],
+      "primary_key": ["asset_id"],
+      "foreign_keys": [
+        {
+          "column": "office_id",
+          "references_table": "offices",
+          "references_column": "office_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        }
+      ],
+      "columns": {
+        "asset_id": "Unique identifier for each asset.",
+        "office_id": "Links the physical asset to its current supervising office.",
+        "asset_tag": "Unique organizational tracker or barcode tag.",
+        "asset_type": "The category of the asset (e.g., Laptop, Monitor, Vehicle).",
+        "brand": "Manufacturer or brand name.",
+        "model": "Model name or number.",
+        "serial_number": "Unique manufacturer serial tracking number.",
+        "purchase_date": "Date the asset was acquired.",
+        "status": "Current availability or lifecycle state of the asset. Defaults to 'Available'."
+      },
+      "relationship_hints": [
+        "Join with 'offices' via 'office_id' to pinpoint an asset's location.",
+        "Join with 'employee_assets' via 'asset_id' to discover which employee is using this hardware."
+      ]
+    },
+    {
+      "table_name": "attendance",
+      "description": "Tracks daily clock-in and clock-out logs, time-tracking records, daily hours worked, and attendance statuses for personnel.",
+      "keywords": ["timesheet", "clock in", "clock out", "hours worked", "absent", "present", "working time", "daily tracking"],
+      "primary_key": ["attendance_id"],
+      "foreign_keys": [
+        {
+          "column": "employee_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        }
+      ],
+      "columns": {
+        "attendance_id": "Primary key for daily individual attendance entries.",
+        "employee_id": "Identifies the staff member recording attendance.",
+        "attendance_date": "The specific calendar date of the log.",
+        "check_in": "Timestamp of check-in/clock-in time.",
+        "check_out": "Timestamp of check-out/clock-out time.",
+        "status": "Attendance state (e.g., Present, Absent, Half-Day, Late).",
+        "total_hours": "Calculated total decimal working hours for the day."
+      },
+      "relationship_hints": [
+        "Join with 'employees' via 'employee_id' to fetch employee profiles alongside their work hour histories."
+      ]
+    },
+    {
+      "table_name": "clients",
+      "description": "Maintains directory details, industrial categories, and primary points of contact for external corporate accounts and customers.",
+      "keywords": ["customer", "external account", "corporate partner", "client industry", "business contact", "client code"],
+      "primary_key": ["client_id"],
+      "foreign_keys": [
+        {
+          "column": "location_id",
+          "references_table": "locations",
+          "references_column": "location_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        }
+      ],
+      "columns": {
+        "client_id": "Unique primary key identifying the client company.",
+        "client_code": "Unique alphanumeric business reference string for the client.",
+        "client_name": "The legal/formal name of the client organization.",
+        "industry": "Market sector or industry category (e.g., Telecom, Finance, Healthcare).",
+        "location_id": "Foreign key pointing to the geographical headquarters of the client.",
+        "contact_email": "Primary corporate email for engagement.",
+        "contact_phone": "Primary corporate phone line."
+      },
+      "relationship_hints": [
+        "Join with 'locations' via 'location_id' to extract city/state records of clients.",
+        "Join with 'projects' via 'client_id' to figure out which vendor contracts power individual initiatives."
+      ]
+    },
+    {
+      "table_name": "departments",
+      "description": "Defines organizational operating divisions, business units, or departments alongside budgetary allocations and operating offices.",
+      "keywords": ["business unit", "division", "cost center", "department budget", "dept code", "operational sector"],
+      "primary_key": ["department_id"],
+      "foreign_keys": [
+        {
+          "column": "office_id",
+          "references_table": "offices",
+          "references_column": "office_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        }
+      ],
+      "columns": {
+        "department_id": "Unique identifier for the structural department.",
+        "office_id": "The physical workspace facility acting as the parent hub for this unit.",
+        "department_code": "Unique code code defining the business unit.",
+        "department_name": "Descriptive title of the department (e.g., Human Resources, AI Engineering).",
+        "budget": "Financial funding allocated to this cost center.",
+        "created_at": "System creation date record."
+      },
+      "relationship_hints": [
+        "Join with 'employees' via 'department_id' to extract structural team counts or organizational hierarchies.",
+        "Join with 'projects', 'teams', or 'training_programs' to map corporate divisions to operations."
+      ]
+    },
+    {
+      "table_name": "designations",
+      "description": "Defines standardized job descriptions, occupational titles, hierarchy bands, tier structural brackets, and corporate pay scale rules.",
+      "keywords": ["job title", "salary tier", "rank", "seniority level", "role band", "minimum salary", "maximum compensation"],
+      "primary_key": ["designation_id"],
+      "foreign_keys": [],
+      "columns": {
+        "designation_id": "Unique identity token for the career rank/tier configuration.",
+        "title": "Official job title label (e.g., Senior AI Engineer, Data Architect).",
+        "level_no": "Numeric integer indicating depth in the company hierarchy tier.",
+        "min_salary": "Lower boundary compensation bracket allowed for this specific job tier.",
+        "max_salary": "Upper boundary compensation ceiling allowed for this specific job tier."
+      },
+      "relationship_hints": [
+        "Join with 'employees' via 'designation_id' to resolve base career titles and audit clear compensation benchmarks."
+      ]
+    },
+    {
+      "table_name": "employee_assets",
+      "description": "An intermediate bridge map outlining specific hardware tools, laptops, or physical assets checked out by and assigned to specific workers.",
+      "keywords": ["hardware allocation", "laptop allocation", "equipment return", "asset checkout", "device issue", "return condition"],
+      "primary_key": ["employee_asset_id"],
+      "foreign_keys": [
+        {
+          "column": "asset_id",
+          "references_table": "assets",
+          "references_column": "asset_id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT"
+        },
+        {
+          "column": "employee_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        }
+      ],
+      "columns": {
+        "employee_asset_id": "Unique mapping tracking identifier for item custody records.",
+        "employee_id": "The person holding or returning the item.",
+        "asset_id": "The inventory number of the object requested/assigned.",
+        "assigned_on": "The date custody began.",
+        "returned_on": "The date the item was turned back in.",
+        "condition_on_issue": "Evaluation notes regarding product quality when released to user.",
+        "condition_on_return": "Evaluation remarks assessing damage/health when returned."
+      },
+      "relationship_hints": [
+        "Acts as a junction to connect a person ('employees') directly to a concrete physical tool ('assets')."
+      ]
+    },
+    {
+      "table_name": "employee_managers",
+      "description": "Preserves historical reporting lines, personnel manager relationships, professional hierarchy loops, and supervisory assignments.",
+      "keywords": ["reporting structure", "supervisor", "direct report", "line manager", "organizational chart", "hierarchy mapping"],
+      "primary_key": ["manager_relation_id"],
+      "foreign_keys": [
+        {
+          "column": "employee_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        },
+        {
+          "column": "manager_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT"
+        }
+      ],
+      "columns": {
+        "manager_relation_id": "Unique transaction primary key mapping a specific supervisor connection.",
+        "employee_id": "The subordinate/staff member tracking in the reporting line.",
+        "manager_id": "The managing supervisor. This acts as a self-referencing key path to 'employees.employee_id'.",
+        "effective_from": "Activation window showing when the oversight path began.",
+        "effective_to": "Expiration window showing when the oversight path ended."
+      },
+      "relationship_hints": [
+        "A self-joining bridge linking 'employees' back to themselves to discover supervisor names or isolate team structures."
+      ]
+    },
+    {
+      "table_name": "employee_project_assignments",
+      "description": "Maps resource utilization, staff project assignments, role profiles on ongoing initiatives, allocation effort values, and billing types.",
+      "keywords": ["project allocation", "staff utilization", "billable hour", "team member role", "project roster", "project timeline"],
+      "primary_key": ["assignment_id"],
+      "foreign_keys": [
+        {
+          "column": "employee_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        },
+        {
+          "column": "project_id",
+          "references_table": "projects",
+          "references_column": "project_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        }
+      ],
+      "columns": {
+        "assignment_id": "Unique primary key for single resource-project assignment ledger records.",
+        "employee_id": "Staff member allocated to the initiative.",
+        "project_id": "The specific workspace initiative being populated.",
+        "role_on_project": "Functional title on this specific sprint (e.g., Technical Lead, QA Specialist).",
+        "allocation_percent": "Effort workload percentage (e.g., 100 for full-time, 50 for split allocation).",
+        "assigned_from": "Date work contribution officially starts.",
+        "assigned_to": "Targeted project offboarding date schedule.",
+        "billable": "Boolean flag marker. 1 means the client is invoiced for this resource's time; 0 means internal overhead."
+      },
+      "relationship_hints": [
+        "A critical core junction bridging the staff table 'employees' to the corporate workspace table 'projects'."
+      ]
+    },
+    {
+      "table_name": "employee_skills",
+      "description": "Tracks talent profiles, tech stack expertise metrics, certification check indicators, and skill sets for the workforce.",
+      "keywords": ["competency", "programming language", "technology stack", "years of experience", "certified professional", "skill score"],
+      "primary_key": ["employee_skill_id"],
+      "foreign_keys": [
+        {
+          "column": "employee_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        },
+        {
+          "column": "skill_id",
+          "references_table": "skills",
+          "references_column": "skill_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        }
+      ],
+      "columns": {
+        "employee_skill_id": "Unique transaction identity code tracking a person's skill asset ledger.",
+        "employee_id": "The professional holding the skill.",
+        "skill_id": "The target entry inside the master skills taxonomy library.",
+        "proficiency_level": "Expertise evaluation (e.g., Beginner, Intermediate, Expert).",
+        "years_experience": "Decimal duration in years tracking the active use of this skill tool.",
+        "certified": "Binary flag indicator showing formal examination certification (1 = Certified, 0 = Self-taught/Uncertified)."
+      },
+      "relationship_hints": [
+        "Bridges 'employees' directly with 'skills' to find out who has specialized background capabilities."
+      ]
+    },
+    {
+      "table_name": "employee_training",
+      "description": "Maintains course enrollment ledgers, continuous learning history, test scores, and educational compliance status of staff.",
+      "keywords": ["course registration", "training tracking", "exam score", "program enrollment", "upskilling status", "completed course"],
+      "primary_key": ["employee_training_id"],
+      "foreign_keys": [
+        {
+          "column": "employee_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        },
+        {
+          "column": "training_program_id",
+          "references_table": "training_programs",
+          "references_column": "training_program_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        }
+      ],
+      "columns": {
+        "employee_training_id": "Unique tracking token for individual course attendance instances.",
+        "employee_id": "The staff learner registering for educational programs.",
+        "training_program_id": "The target continuous education curriculum module code.",
+        "enrolled_on": "The date learning materials were unlocked/started.",
+        "completed_on": "The date course graduation status was reached.",
+        "status": "Current enrollment condition (e.g., Enrolled, In-Progress, Completed, Failed).",
+        "score": "Numeric examination assessment grade outcome mark."
+      },
+      "relationship_hints": [
+        "Connects 'employees' to 'training_programs' to query professional development lifecycles."
+      ]
+    },
+    {
+      "table_name": "employees",
+      "description": "The foundational core entity directory preserving personal records, contact information, recruitment dates, structural affiliations, and employment status tags.",
+      "keywords": ["personnel directory", "staff profile", "hire date", "email address", "phone contact", "gender", "birth date", "active staff member"],
+      "primary_key": ["employee_id"],
+      "foreign_keys": [
+        {
+          "column": "department_id",
+          "references_table": "departments",
+          "references_column": "department_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        },
+        {
+          "column": "designation_id",
+          "references_table": "designations",
+          "references_column": "designation_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        },
+        {
+          "column": "office_id",
+          "references_table": "offices",
+          "references_column": "office_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        },
+        {
+          "column": "team_id",
+          "references_table": "teams",
+          "references_column": "team_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        }
+      ],
+      "columns": {
+        "employee_id": "Unique identity code used across the database network to identify a person.",
+        "employee_code": "Unique public corporate code sequence identifier.",
+        "first_name": "Given name of employee.",
+        "last_name": "Family name of employee.",
+        "gender": "Gender classification identifier.",
+        "date_of_birth": "Birth date.",
+        "email": "Primary workspace email handle.",
+        "phone": "Mobile phone string.",
+        "hire_date": "Onboarding/recruitment date.",
+        "department_id": "Link mapping to parent operational department unit.",
+        "team_id": "Link mapping to localized inner group team.",
+        "designation_id": "Link mapping to specific title rank configuration scale.",
+        "office_id": "Link mapping to structural building workstation branch location.",
+        "employment_status": "Status category flag (e.g., Active, Terminated, On-Leave).",
+        "created_at": "Database creation record entry audit marker.",
+        "updated_at": "Database profile adjustment audit timestamp."
+      },
+      "relationship_hints": [
+        "The focal center node of the entire RAG application graph. It links directly to 'departments', 'designations', 'offices', and 'teams', and serves as the primary hook for all ledger tables like 'payroll', 'attendance', and 'leave_requests'."
+      ]
+    },
+    {
+      "table_name": "leave_requests",
+      "description": "Manages vacation plans, medical leave tracking, emergency absence records, and managerial approval status logs.",
+      "keywords": ["time off", "vacation request", "sick leave", "absence approval", "paternity leave", "start date", "end date"],
+      "primary_key": ["leave_request_id"],
+      "foreign_keys": [
+        {
+          "column": "approver_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL"
+        },
+        {
+          "column": "employee_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        }
+      ],
+      "columns": {
+        "leave_request_id": "Unique incremental primary tracking token for the time-off application.",
+        "employee_id": "The applicant worker requesting an absence window.",
+        "approver_id": "The authorized line supervisor validating the leave request.",
+        "leave_type": "Classification grouping (e.g., Casual, Sick, Annual, Unpaid).",
+        "start_date": "The starting calendar day of absence.",
+        "end_date": "The final calendar day of absence.",
+        "reason": "Free-text statement justifying the absence request.",
+        "status": "Current authorization state (e.g., Pending, Approved, Rejected).",
+        "requested_at": "Timestamp tracking entry date."
+      },
+      "relationship_hints": [
+        "Join with 'employees' using 'employee_id' to pinpoint the sender, or join via 'approver_id' to isolate administrative bottlenecks."
+      ]
+    },
+    {
+      "table_name": "locations",
+      "description": "Geographical address indexing lookups defining cities, regional territory states, international countries, and localized timezone codes.",
+      "keywords": ["city location", "postal code", "country lookup", "timezone region", "geography identifier", "regional office state"],
+      "primary_key": ["location_id"],
+      "foreign_keys": [],
+      "columns": {
+        "location_id": "Unique primary key token for geographic mapping rows.",
+        "city": "Name of the target municipality or city.",
+        "state": "Name of the province, territory, or state area.",
+        "country": "Nation reference name. Defaults to 'India'.",
+        "postal_code": "Mailing zip code sequence or postal code identifier.",
+        "timezone": "Canonical operational context timezone string (e.g., Asia/Kolkata)."
+      },
+      "relationship_hints": [
+        "Provides master geographical context to 'offices' and 'clients'."
+      ]
+    },
+    {
+      "table_name": "offices",
+      "description": "Maintains data on operational corporate facilities, regional workspace campuses, corporate branches, and headquarters indicator flags.",
+      "keywords": ["office branch", "workspace building", "corporate facility", "head office flag", "office location contact", "campus directory"],
+      "primary_key": ["office_id"],
+      "foreign_keys": [
+        {
+          "column": "location_id",
+          "references_table": "locations",
+          "references_column": "location_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        }
+      ],
+      "columns": {
+        "office_id": "Unique identity index for the physical building/facility branch.",
+        "location_id": "Geography map code connecting this office to its master location details.",
+        "office_code": "Short unique identifier identifying the specific office branch.",
+        "office_name": "Full workspace descriptive title (e.g., Hyderabad Tech Park Hub).",
+        "address_line1": "Street tracking address line 1.",
+        "address_line2": "Suite/Floor mapping line 2 attributes.",
+        "phone": "Direct phone system connection string for the workspace.",
+        "is_head_office": "Boolean flag identifier highlighting the primary corporate site (1 = Head Office, 0 = Regional Branch)."
+      },
+      "relationship_hints": [
+        "Connects to 'locations' to pull localized address parameters, and structures 'employees', 'departments', and 'assets'."
+      ]
+    },
+    {
+      "table_name": "payroll",
+      "description": "Maintains monthly compensation files, payroll distributions, detailed component deductions, basic salary fields, allowances, and payment statuses.",
+      "keywords": ["salary slip", "monthly pay", "hra allowance", "deduction calculations", "net salary payout", "compensation ledger", "financial statement"],
+      "primary_key": ["payroll_id"],
+      "foreign_keys": [
+        {
+          "column": "employee_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        }
+      ],
+      "columns": {
+        "payroll_id": "Unique transaction primary key string tracking the payout slip entry.",
+        "employee_id": "The payee staff worker recipient profile link.",
+        "payroll_month": "Targeted accounting timeline window string format (e.g., 2026-05).",
+        "basic_salary": "Base contracted payment component before allowances.",
+        "hra": "House Rent Allowance funding allocation component.",
+        "allowances": "Aggregated secondary bonus or shift compensation allowances.",
+        "deductions": "Total funds subtracted for taxes, welfare, or penalties.",
+        "net_salary": "Final calculated payout check total sum delivered to the resource.",
+        "payment_status": "Transaction clearing code status (e.g., Pending, Processed, Failed).",
+        "paid_on": "Actual clearance completion date marker description."
+      },
+      "relationship_hints": [
+        "Join with 'employees' using 'employee_id' to parse direct total financial compensation metrics or salary costs."
+      ]
+    },
+    {
+      "table_name": "performance_reviews",
+      "description": "Tracks periodic evaluation cycles, employee evaluation ratings, percentage goals reached, and supervisor narrative reviews.",
+      "keywords": ["appraisal rating", "annual review", "manager score", "performance metrics", "goals met percentage", "evaluation comments"],
+      "primary_key": ["review_id"],
+      "foreign_keys": [
+        {
+          "column": "employee_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE"
+        },
+        {
+          "column": "reviewer_id",
+          "references_table": "employees",
+          "references_column": "employee_id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT"
+        }
+      ],
+      "columns": {
+        "review_id": "Unique transaction identity for individual assessment sheets.",
+        "employee_id": "The target employee profile being reviewed.",
+        "reviewer_id": "The evaluating professional providing feedback scores. Maps to 'employees.employee_id'.",
+        "review_period_start": "The evaluation date range start limit.",
+        "review_period_end": "The evaluation date range end limit.",
+        "rating": "Numeric performance rating score indicator.",
+        "goals_met_percent": "Quantifiable milestone achievement metric out of 100.",
+        "comments": "Qualitative performance feedback and narrative review notes from the manager.",
+        "reviewed_at": "Actual system creation date record for the appraisal entry."
+      },
+      "relationship_hints": [
+        "A dual-joining table linking back to 'employees' twice (via 'employee_id' for the worker and via 'reviewer_id' for the appraising manager)."
+      ]
+    },
+    {
+      "table_name": "projects",
+      "description": "Structures client contracts, ongoing operational software/infrastructure sprints, project timelines, and operational statuses.",
+      "keywords": ["project delivery", "client milestone", "project budget", "delivery status", "active code sprint", "initiative scope"],
+      "primary_key": ["project_id"],
+      "foreign_keys": [
+        {
+          "column": "client_id",
+          "references_table": "clients",
+          "references_column": "client_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        },
+        {
+          "column": "department_id",
+          "references_table": "departments",
+          "references_column": "department_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        }
+      ],
+      "columns": {
+        "project_id": "Unique entry identifier token for the program/project workspace.",
+        "client_id": "Identifies the account client funding the project.",
+        "department_id": "Identifies the core internal delivery department handling execution.",
+        "project_code": "Unique structural code identification sequence identifier.",
+        "project_name": "Full descriptive title label of the project.",
+        "start_date": "Targeted kickoff deployment calendar date.",
+        "end_date": "Expected or historical project wrap-up date.",
+        "status": "State parameter (e.g., Planned, In-Progress, On-Hold, Completed).",
+        "budget": "Assigned financial budget ceiling cap.",
+        "current_assignment_count": "Live structural metric listing active resource count slots assigned."
+      },
+      "relationship_hints": [
+        "Join with 'clients' or 'departments' to filter operational pipelines, or trace allocations via 'employee_project_assignments'."
+      ]
+    },
+    {
+      "table_name": "skills",
+      "description": "A centralized technical capability lookup index mapping standardized technologies, capabilities, frameworks, and skill categories.",
+      "keywords": ["skill index", "technology category", "competency library", "core expertise name", "technical taxonomy"],
+      "primary_key": ["skill_id"],
+      "foreign_keys": [],
+      "columns": {
+        "skill_id": "Unique numeric index for a technical skill taxonomy category.",
+        "skill_name": "The clear title of the skill (e.g., Python, OpenCV, NetworkX, SQL).",
+        "skill_category": "High level grouping grouping (e.g., Computer Vision, Data Engineering, Human Resources)."
+      },
+      "relationship_hints": [
+        "Queried primarily by bridging through 'employee_skills' to discover matching talent pools across your engineering landscape."
+      ]
+    },
+    {
+      "table_name": "teams",
+      "description": "Manages functional units, micro-teams, or agile task forces operating inside large organizational departments.",
+      "keywords": ["micro-team", "scrum squad", "task force group", "team code descriptor", "functional squad name"],
+      "primary_key": ["team_id"],
+      "foreign_keys": [
+        {
+          "column": "department_id",
+          "references_table": "departments",
+          "references_column": "department_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        }
+      ],
+      "columns": {
+        "team_id": "Unique identity key defining the small agile group cell.",
+        "department_id": "Links this specific team cell back to its macro-level department context.",
+        "team_code": "Unique public code sequence identifier.",
+        "team_name": "Descriptive title of the working group squad (e.g., Computer Vision Analytics Squad)."
+      },
+      "relationship_hints": [
+        "Connects 'departments' to 'employees' for deep granular org-chart querying."
+      ]
+    },
+    {
+      "table_name": "training_programs",
+      "description": "Indexes structural upskilling programs, educational training blueprints, and professional development programs designed for teams.",
+      "keywords": ["training curriculum", "upskilling seminar", "provider company", "course format", "educational duration hours"],
+      "primary_key": ["training_program_id"],
+      "foreign_keys": [
+        {
+          "column": "department_id",
+          "references_table": "departments",
+          "references_column": "department_id",
+          "on_update": "CASCADE",
+          "on_delete": "NO ACTION"
+        }
+      ],
+      "columns": {
+        "training_program_id": "Unique tracking token for the curriculum framework path.",
+        "department_id": "The corporate division owner sponsoring the learning framework.",
+        "program_code": "Unique program code tag.",
+        "program_name": "Descriptive title of the learning path.",
+        "provider": "The internal organization or external vendor running the course module.",
+        "duration_hours": "Total learning hours requested for training graduation.",
+        "mode": "Delivery format method (e.g., Online, Classroom, Hybrid)."
+      },
+      "relationship_hints": [
+        "Join with 'employee_training' to run audit evaluations evaluating educational graduation tracking and test scores."
+      ]
+    }
+  ]
+}

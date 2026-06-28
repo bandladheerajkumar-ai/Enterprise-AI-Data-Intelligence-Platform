@@ -1,0 +1,228 @@
+{
+  "relationships": [
+    {
+      "from_table": "assets",
+      "from_column": "office_id",
+      "to_table": "offices",
+      "to_column": "office_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "attendance",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "clients",
+      "from_column": "location_id",
+      "to_table": "locations",
+      "to_column": "location_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "departments",
+      "from_column": "office_id",
+      "to_table": "offices",
+      "to_column": "office_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "employee_assets",
+      "from_column": "asset_id",
+      "to_table": "assets",
+      "to_column": "asset_id",
+      "on_update": "NO ACTION",
+      "on_delete": "RESTRICT"
+    },
+    {
+      "from_table": "employee_assets",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_managers",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_managers",
+      "from_column": "manager_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "RESTRICT"
+    },
+    {
+      "from_table": "employee_project_assignments",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_project_assignments",
+      "from_column": "project_id",
+      "to_table": "projects",
+      "to_column": "project_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_skills",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_skills",
+      "from_column": "skill_id",
+      "to_table": "skills",
+      "to_column": "skill_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_training",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employee_training",
+      "from_column": "training_program_id",
+      "to_table": "training_programs",
+      "to_column": "training_program_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "employees",
+      "from_column": "department_id",
+      "to_table": "departments",
+      "to_column": "department_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "employees",
+      "from_column": "designation_id",
+      "to_table": "designations",
+      "to_column": "designation_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "employees",
+      "from_column": "office_id",
+      "to_table": "offices",
+      "to_column": "office_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "employees",
+      "from_column": "team_id",
+      "to_table": "teams",
+      "to_column": "team_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "leave_requests",
+      "from_column": "approver_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    },
+    {
+      "from_table": "leave_requests",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "offices",
+      "from_column": "location_id",
+      "to_table": "locations",
+      "to_column": "location_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "payroll",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "performance_reviews",
+      "from_column": "employee_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    {
+      "from_table": "performance_reviews",
+      "from_column": "reviewer_id",
+      "to_table": "employees",
+      "to_column": "employee_id",
+      "on_update": "NO ACTION",
+      "on_delete": "RESTRICT"
+    },
+    {
+      "from_table": "projects",
+      "from_column": "client_id",
+      "to_table": "clients",
+      "to_column": "client_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "projects",
+      "from_column": "department_id",
+      "to_table": "departments",
+      "to_column": "department_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "teams",
+      "from_column": "department_id",
+      "to_table": "departments",
+      "to_column": "department_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    },
+    {
+      "from_table": "training_programs",
+      "from_column": "department_id",
+      "to_table": "departments",
+      "to_column": "department_id",
+      "on_update": "CASCADE",
+      "on_delete": "NO ACTION"
+    }
+  ]
+}
